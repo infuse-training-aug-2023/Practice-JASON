@@ -5,16 +5,10 @@ const user = {
   hobbies: ["Reading", "Listening to music", "Collecting stamps"],
 };
 
-/**
- * Use destructuting to log the following
- */
-
 const printUserProfile = () => {
   const { name, designation, company, hobbies } = user;
-  const hobbiesString = hobbies.join(", ");
-  console.log(
-    `${name} is a ${designation} at ${company}. He likes ${hobbiesString}.`
-  );
+  const hobbiesString = hobbies.slice(0, -1).join(", ") + (hobbies.length > 1 ? " and " : "") + hobbies.slice(-1);
+  console.log(`${name} is a ${designation} at ${company}. He likes ${hobbiesString}.`);
 };
 
 printUserProfile();
