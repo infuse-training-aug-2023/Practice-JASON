@@ -4,33 +4,58 @@ Selenium::WebDriver::Chrome::Service.driver_path = "C:/Users/JasonGonsalves/Docu
 
 driver = Selenium::WebDriver.for :chrome
 
-driver.navigate.to "https://www.bing.com/"
+driver.manage.window.maximize
 
-search_box = driver.find_element(:name, "q")
+def navigate_to_bing(driver)
+  driver.navigate.to "https://www.bing.com/"
+end
 
-search_box.send_keys "Selenium WebDriver"
+def search_for(driver, query)
+  search_box = driver.find_element(:name, "q")
+  search_box.send_keys query
+  search_box.submit
+end
 
-search_box.submit
+def click_images_tab(driver)
+  images_tab = driver.find_element(:id, "b-scopeListItem-images")
+  images_tab.click
+end
 
-wait = Selenium::WebDriver::Wait.new(timeout: 10)
-wait.until { driver.title.start_with? "Selenium WebDriver" }
+def click_first_image(driver)
+  first_image = driver.find_element(:css, "ul:first-child.dgControl_list > li:first-child > div.iuscp.isv")
+  first_image.click
+end
 
-puts driver.title
+def wait_for_title(driver, title)
+  wait = Selenium::WebDriver::Wait.new(timeout: 10)
+  wait.until { driver.title.start_with? title }
+end
 
-images_tab = driver.find_element(:id, "b-scopeListItem-images")
-images_tab.click
+def wait_for_element(driver, id)
+  wait = Selenium::WebDriver::Wait.new(timeout: 10)
+  wait.until { driver.find_element(:id, id) }
+end
 
-wait.until { driver.title.start_with? "Selenium WebDriver" }
+def get_current_url(driver)
+  puts driver.current_url
+end
 
-puts driver.title
+def quit_driver(driver)
+  driver.quit
+end
 
-first_image = driver.find_element(:css, "ul:first-child.dgControl_list > li:first-child > div.iuscp.isv")
-first_image.click
+navigate_to_bing(driver)
+search_for(driver, "Selenium WebDriver")
+wait_for_title(driver, "Selenium WebDriver")
 
-wait.until { driver.find_element(:id, "b_content") }
+click_images_tab(driver)
+wait_for_title(driver, "Selenium WebDriver")
 
-puts driver.current_url
+click_first_image(driver)
+wait_for_element(driver, "b_content")
+
+get_current_url(driver)
 
 sleep 3
 
-driver.quit
+quit_driver(driver)

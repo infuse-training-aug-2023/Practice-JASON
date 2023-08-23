@@ -14,11 +14,9 @@ driver.switch_to.frame(iframe)
 
 slider = driver.find_element(:id, "slider")
 
-slider_width = slider.size.width
+span = slider.find_element(:tag_name, "span")
 
-slider_position = slider_width / 2
-
-driver.action.click_and_hold(slider).move_by(slider_position, 0).release.perform
+span.send_keys :arrow_right
 
 amount = driver.find_element(:id, "amount").attribute("value")
 

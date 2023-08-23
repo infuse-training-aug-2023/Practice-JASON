@@ -8,9 +8,11 @@ driver.manage.window.maximize
 
 driver.get "https://letcode.in/forms"
 
-dropdown = driver.find_element(:css, "div:nth-child(5).columns.container > div:last-child.column.is-half > div.field > div.control")
+dropdown_xpath = driver.find_element(:xpath, '//select[starts-with(.,"AfghanistanÅland IslandsAlbaniaAlgeriaAmerican")]')
 
-options = dropdown.find_elements(:tag_name, "option")
+select = Selenium::WebDriver::Support::Select.new(dropdown_xpath)
+
+options = select.options
 
 options.each do |option|
   puts option.text
