@@ -14,5 +14,17 @@ class TestSkipSports < Test::Unit::TestCase
     array = ["volleyball", "badminton", "table tennis", "squash", "rugby"]
     expected_output = []
     assert_equal(expected_output, skip_sports(array, 5))
+
+    array = ["football", "basketball", "baseball", "hockey", "soccer"]
+    expected_output = nil
+    assert_equal(expected_output, skip_sports(array, -2))
+
+    array = ["tennis", "golf", "swimming", "cycling", "running"]
+    expected_output = nil
+    assert_equal(expected_output, skip_sports(array, "-1"))
+
+    array = ["tennis", "golf", "swimming", "cycling", "running"]
+    expected_output = []
+    assert_equal(expected_output, skip_sports(array, 7))
   end
 end
