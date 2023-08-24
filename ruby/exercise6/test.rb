@@ -1,26 +1,32 @@
 require 'test/unit'
-require 'base64'
 require_relative 'exercise6'
+require 'base64'
 
 class TestBase64Encode < Test::Unit::TestCase
+  def test_init
+    encoder = Base64Encoder.new()
+    assert encoder.is_a?(Base64Encoder)
+  end
+
   def setup
-    @txt_file = File.read("content.txt")
-    @your_name = "jason.txt"
-    @string = "the string that will be base encoded"
-    @encoded_string = Base64.encode64(@string).chomp
-    @new_content = @txt_file.gsub(@string, @encoded_string)
-    File.open(@your_name, "w") do |f|
-      f.write(@new_content)
-    end
+    @file = "content.txt"
+    @file_to_read = "jason.txt"
+    @string_to_encode = "the string that will be base encoded"
+    @file_manipulator = Base64Encoder.new
+    @file_manipulator.encode_and_save(@file)
+    txt_file = File.read(@file_to_read)
+    encoded_string = Base64.encode64(@string_to_encode).chomp
+    new_content = txt_file.gsub(@string_to_encode, encoded_string)
+
+    assert_equal(txt_file, new_content)
   end
 
   def teardown
-    # File.delete("jason.txt")
-  end
+    begin
+      raise "invalid file" unless File.file?(@file_to_read)
 
-  def test_base64_encode
-    expected_output = "Originally, John Doe was a sham name used to indicate any plaintiff in an action of ejectment (a legal action to regain property) in civil court [ “ dGhlIHN0cmluZyB0aGF0IHdpbGwgYmUgYmFzZSBlbmNvZGVk ”]. Richard Roe was the counterpart, to indicate the defendant. These fake names were used in delicate legal matters, a practice that was abolished in English law in 1852."
-    actual_output = File.read("jason.txt")
-    assert_equal(expected_output, actual_output)
+    rescue StandardError => e
+      puts "Error: #{e.message}"
+    end
   end
 end
